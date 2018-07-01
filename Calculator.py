@@ -183,9 +183,9 @@ class MainWindow:
 
         :return: None
         """
-        # Removes the last character of the display string on loop until it hits anything but a number
+        # Removes the last character of the display str on loop until it hits anything but a number or a decimal point
         while True:
-            if self.sDisplay_text[-1:].isdigit():
+            if self.sDisplay_text[-1:].isdigit() or self.sDisplay_text[-1:] == '.':
                 self.sDisplay_text = self.sDisplay_text[:-1]
             else:
                 break
