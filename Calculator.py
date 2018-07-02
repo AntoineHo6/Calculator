@@ -33,11 +33,11 @@ class MainWindow:
 
         # String, that is displayed
         self.sDisplay_text = ""
-        self.sNumbers = ["", ""]
-        # Will be the operator on the two numbers in self.sNumbers
+        self.lNumbers = ["", ""]
+        # Will be the operator on the two numbers in self.lNumbers
         self.sOperator = ""
-        # Decides which of the two numbers in self.sNumbers the program has to configure
-        # (number_1 refers to self.sNumbers[0])
+        # Decides which of the two numbers in self.lNumbers the program has to configure
+        # (number_1 refers to self.lNumbers[0])
         self.bChange_number_1 = True
 
         # Makes string type operators usable in mathematical equations
@@ -195,7 +195,7 @@ class MainWindow:
 
     def build_number(self, event):
         """
-        Updates one of the two number variables(self.sNumbers[0]/self.sNumbers[1]) when the user either presses
+        Updates one of the two number variables(self.lNumbers[0]/self.lNumbers[1]) when the user either presses
         on the number buttons or the decimal point button
 
         :param event:
@@ -206,22 +206,27 @@ class MainWindow:
 
         if self.bChange_number_1:
             # If user enters decimal point first
-            if (self.sNumbers[0] == "" or self.sNumbers[0] == "-") and button_value == ".":
-                self.sNumbers[0] += "0."
+            if (self.lNumbers[0] == "" or self.lNumbers[0] == "-") and button_value == ".":
+                self.lNumbers[0] += "0."
                 self.append_display("0.")
             # This condition avoids duplicate decimal points
-            elif "." not in self.sNumbers[0] or button_value != ".":
-                self.sNumbers[0] += button_value
+            elif "." not in self.lNumbers[0] or button_value != ".":
+                self.lNumbers[0] += button_value
                 self.append_display(button_value)
 
-        # Does the same things but for the second number variable(self.sNumbers[1])
+        # Does the same things but for the second number variable(self.lNumbers[1])
         else:
-            if (self.sNumbers[1] == "" or self.sNumbers[1] == "-") and button_value == ".":
-                self.sNumbers[1] += "0."
+            if (self.lNumbers[1] == "" or self.lNumbers[1] == "-") and button_value == ".":
+                self.lNumbers[1] += "0."
                 self.append_display("0.")
-            elif "." not in self.sNumbers[1] or button_value != ".":
-                self.sNumbers[1] += button_value
+            elif "." not in self.lNumbers[1] or button_value != ".":
+                self.lNumbers[1] += button_value
                 self.append_display(button_value)
+
+        # SPECIAL FOR MEI
+        if self.lNumbers[0] == "42069":
+            self.clear()
+            self.replace_display("merci Meibee pour la correction dans l'époque moderne")
 
     def build_operator(self, event):
         """
@@ -234,11 +239,11 @@ class MainWindow:
         button_value = event.widget.cget('text')
 
         # User wants his first number to be negative
-        if self.sNumbers[0] == "" and button_value == "-":
-            self.sNumbers[0] += "-"
+        if self.lNumbers[0] == "" and button_value == "-":
+            self.lNumbers[0] += "-"
             self.append_display(button_value)
         # Changes the equation operator
-        elif (self.sNumbers[0] != "" and self.sNumbers[0] != "-") and self.sNumbers[1] == "":
+        elif (self.lNumbers[0] != "" and self.lNumbers[0] != "-") and self.lNumbers[1] == "":
             # Replaces the current equation operator with the one user just clicked
             if self.sOperator != "":
                 self.sDisplay_text = self.sDisplay_text[:-1]
@@ -251,7 +256,7 @@ class MainWindow:
                 self.append_display(button_value)
 
         # Calculates the equation and adds the operator to the final result
-        if self.sOperator != "" and (self.sNumbers[0] != "" and self.sNumbers[1] != ""):
+        if self.sOperator != "" and (self.lNumbers[0] != "" and self.lNumbers[1] != ""):
             self.calculate()
             self.sOperator = button_value
             self.append_display(button_value)
@@ -259,7 +264,7 @@ class MainWindow:
 
     def calculate(self):
         """
-        Calculates a result with the two number variables(self.sNumbers[0]/self.sNumbers[1])
+        Calculates a result with the two number variables(self.lNumbers[0]/self.lNumbers[1])
 
         :return: None
         """
@@ -268,14 +273,14 @@ class MainWindow:
         try:
             # Removes decimal points from the sNumbers if nothing comes after them ex: "3." become "3"
             for index in range(2):
-                if self.sNumbers[index][-1:] == ".":
-                    self.sNumbers[index] = self.sNumbers[index][:-1]
+                if self.lNumbers[index][-1:] == ".":
+                    self.lNumbers[index] = self.lNumbers[index][:-1]
 
                 # Store the sNumbers as either int or float
                 try:
-                    numbers[index] = int(self.sNumbers[index])
+                    numbers[index] = int(self.lNumbers[index])
                 except ValueError:
-                    numbers[index] = float(self.sNumbers[index])
+                    numbers[index] = float(self.lNumbers[index])
 
             # Calculates the equation
             try:
@@ -284,7 +289,7 @@ class MainWindow:
                 self.replace_display(str(result))
 
                 # Sets the first index to the result if the user wants to continue to operate on the result
-                self.sNumbers[0] = str(result)
+                self.lNumbers[0] = str(result)
             except ZeroDivisionError:
                 self.clear()
                 self.replace_display("ERROR")
@@ -306,7 +311,7 @@ class MainWindow:
 
         # Clear sNumbers list
         for index in range(2):
-            self.sNumbers[index] = ""
+            self.lNumbers[index] = ""
 
     def clear_ce(self):
         """
@@ -315,10 +320,10 @@ class MainWindow:
         :return: None
         """
         if self.bChange_number_1:
-            self.sNumbers[0] = ""
+            self.lNumbers[0] = ""
             self.del_current_number_display()
         else:
-            self.sNumbers[1] = ""
+            self.lNumbers[1] = ""
             self.del_current_number_display()
 
 
