@@ -12,8 +12,6 @@ from tkinter import *
 
 import operator
 
-import py2exe
-
 
 class MainWindow:
     """ This class is the calculator window that holds everything """
@@ -222,11 +220,6 @@ class MainWindow:
             elif "." not in self.lNumbers[1] or button_value != ".":
                 self.lNumbers[1] += button_value
                 self.append_display(button_value)
-
-        # SPECIAL FOR MEI
-        if self.lNumbers[0] == "42069":
-            self.clear()
-            self.replace_display("merci Meibee pour la correction dans l'époque moderne")
 
     def build_operator(self, event):
         """
